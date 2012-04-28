@@ -1,0 +1,16 @@
+#! /usr/local/bin/node
+
+var fs = require('fs');
+
+process.argv.forEach(function (val, index, array) {
+  if (index >= 2) {
+    fs.readFile(val, function (err, data) {
+      if (err) throw err;
+      try {
+        console.log(JSON.stringify(JSON.parse(data), null, 2));
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  }
+});

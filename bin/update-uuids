@@ -1,0 +1,238 @@
+#!/usr/bin/perl
+
+sub usage {
+print <<"END";
+Usage:
+  update-uuids <file-or-directory> interface1 interface2...
+
+Update IDL files with new UUIDs for the given interfaces as well
+as any interfaces affected by any of those interfaces (recursively).
+
+If a directory is given, it will be recursively scanned for all
+files with a .idl extension.
+
+By default, 'affected by X' means 'inherits from X' only. You may
+pass in '--mode=params' to broaden that meaning to 'inherits from X
+or mentions X in its body' (which is intended to mean 'uses X as a
+parameter', but this script is lazy and doesn't really parse IDL.)
+
+You may use the -n or --dry-run option to avoid making changes.
+
+If a file is changed, the original will be stored with a .idlbak
+extension (which really means foo.idl.idlbak; sorry). You may use
+--revert to copy all .idlbak files back to their original names.
+
+Example usage:
+  update-uuids . nsIDOMNode
+
+Warning: the output is rather verbose. It gives every UUID updated
+along with the reason why it was updated. You probably want to
+pipe it to a file or a pager.
+END
+  exit 0;
+}
+
+BEGIN { $SIG{__WARN__} = sub { print STDERR @_; $DB::single = 1; }; }
+
+use strict;
+use warnings;
+use Getopt::Long;
+
+# Options:
+#  inherit-only
+#  params
+my $MODE = 'inherit-only';
+my $dry_run = 0;
+my $revert = 0;
+GetOptions("mode=s" => \$MODE,
+           "dry-run|n!" => \$dry_run,
+           "revert!" => \$revert,
+           "help|h!" => \&usage,
+          )
+  or die "bad args";
+
+if (@ARGV < ($revert ? 1 : 2)) {
+   die "Usage: $0 <filename or directory> <interface1> <interface2>...\n";
+}
+
+my ($path, @modified) = @ARGV;
+
+my @paths;
+
+if (-f $path) {
+    @paths = ($path);
+} else {
+    chomp(@paths = qx(find $path -name '*.idl' -print));
+}
+
+if ($revert) {
+    my $count = 0;
+    for my $file (@paths) {
+        if (-e "$file.idlbak") {
+            rename($file, "$file.idlorig")
+              or die "rename $file -> $file.idlorig: $!";
+            rename("$file.idlbak", $file)
+              or die "rename $file.idlbak -> $file: $!, better recover from $file.idlorig";
+            unlink("$file.idlorig");
+            ++$count;
+        }
+    }
+    print "Copied back $count files\n";
+    exit 0;
+}
+
+if (my ($sample) = grep { (-e "$_.idlbak") } @paths) {
+    print <<"END";
+Warning: *.idlbak files already exist. Example: $sample
+If you've run once already and want to revert to the previous state,
+rerun
+  $0 <directory> --revert
+END
+    print "Continue? ";
+    chomp(my $response = <STDIN>);
+    exit 0 if $response !~ /^y/;
+}
+
+my %uuid; # { interface => uuid }
+my %users; # { interface => { set of using interfaces } }
+my %iface_tokens;
+
+for my $file (@paths) {
+    process_file($file);
+}
+
+my %reasons;
+$reasons{$_} = "it was given on command line" foreach (@modified);
+my %touched;
+my @touched; # Vaguely useful ordering for humans
+my @Q = @modified;
+while (@Q) {
+    my $iface = shift(@Q);
+    next if $touched{$iface}++;
+    push @touched, $iface;
+
+    while (my ($touched, $why) = each %{ $users{$iface} }) {
+        push @Q, $touched;
+        $reasons{$touched} ||= $why;
+    }
+}
+
+print "uuids to update:\n";
+my %change;
+for my $touched (@touched) {
+    my $uuid = $uuid{$touched}
+      or die "Scanned files did not contain uuid for $touched\n";
+    $change{$uuid{$touched}} = new_uuid();
+}
+
+for my $touched (@touched) {
+    print "  $touched because $reasons{$touched}\n";
+    print "    $uuid{$touched} -> $change{$uuid{$touched}}\n";
+}
+
+# Rewrite all the input files
+for my $path (@paths) {
+    rewrite_file($path);
+}
+print "Originals are in *.idlbak\n";
+
+sub rewrite_file {
+    my ($path) = @_;
+
+    my $source = slurp_file($path);
+    my $changes = 0;
+    while (my ($old, $new) = each %change) {
+        $changes += $source =~ s/$old/$new/g;
+    }
+
+    return if $changes == 0;
+
+    open(my $fh, ">", "$path.idlnew")
+      or die "create $path.idlnew: $!";
+    print $fh $source
+      or die "writing to $path.idlnew: $!";
+    close $fh;
+
+    unless ($dry_run) {
+        rename($path, "$path.idlbak")
+          or die "rename $path -> $path.idlbak: $!";
+
+        rename("$path.idlnew", $path)
+          or die "rename $path.idlnew -> $path: $!";
+    }
+
+    print "Updated $path with $changes changes\n";
+}
+
+sub slurp_file {
+    my ($file) = @_;
+
+    open(SOURCE, "<", $file)
+        or die "open $file: $!";
+
+    local $/;
+    return <SOURCE>;
+}
+
+sub process_file {
+    my ($file) = @_;
+
+    my $source = slurp_file($file);
+
+    # Remove comments
+    local $_ = $source;
+    s!/\*.*?\*/!!sg;
+
+    # Find all interfaces with leading uuids
+    while (/uuid\(([\w-]+)\)       # uuid(aaaaaa-bbb-...)
+            .*?\n                  # rest of line
+            .*?interface\s+(\w+)   # next line has 'interface IFoo'
+            (?: \s*:\s*(\w+) )?    # with an optional parent
+            [\s\n]*\{              # open {
+            ([\w\W]*?)             #        body
+            \}                     # }
+           /xg)
+    {
+        my ($uuid, $iface, $parent, $body) = ($1, $2, $3, $4);
+
+        $uuid{$iface} = $uuid;
+
+        if (defined $parent) {
+            # This interface uses its parent
+            $users{$parent}{$iface} = "it inherits from $parent";
+        }
+
+        if ($MODE eq 'params') {
+            # Scan through body to find all interfaces mentioned
+            my @tokens = $body =~ /(\w+)/g;
+            my %tokens;
+            @tokens{@tokens} = @tokens;
+
+            # Ugh. We don't know which interfaces exist yet.
+            $iface_tokens{$iface} = \%tokens;
+        }
+    }
+
+    if ($MODE eq 'params') {
+        # Now we have all of the parent relationships and the set of interfaces.
+        # Close over the tokens found within each interface definition.
+        my @ifaces = keys %iface_tokens;
+
+        if ($MODE eq 'params') {
+            while (my ($iface, $tokens) = each %iface_tokens) {
+                my @used_ifaces = grep { defined } @$tokens{@ifaces};
+                for my $used (@used_ifaces) {
+                    $users{$used}{$iface} ||= "its body contains $used";
+                }
+            }
+        }
+    }
+
+    return $source;
+}
+
+sub new_uuid {
+    my $uuid = `uuidgen`;
+    chomp($uuid);
+    return $uuid;
+}

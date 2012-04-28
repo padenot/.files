@@ -1,0 +1,19 @@
+#!/usr/bin/zsh
+
+# Create a timelapse using the webcam
+
+mkdir timelapse_frames
+cd timelapse_frames
+# in seconds
+if [ -z $1 ]
+then
+  duration=10
+else
+  duration=$1
+fi
+# 25 frames/second
+frames=$((duration * 25))
+streamer -q -c /dev/video0 -f rgb24 -r 1 -s 1280x800 -t $frames -o /tmp/plop.avi
+ffmpeg -i /tmp/plop.avi image%d.jpg
+ffmpeg -b 8000k -i image%d.jpg out.ogv
+rm /tmp/plop.avi

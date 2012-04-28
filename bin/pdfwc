@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]
+then
+  echo "$(basename $0) [-w|-c|-l|-L]? file.pdf+"
+  echo "\t-w : count words"
+  echo "\t-c : count characters"
+  echo "\t-l : count lines"
+  echo "\t-L : maximum line length"
+  exit 1
+fi
+
+wcopt=""
+
+for i in -w -c -l -L
+do
+  [ "$1" = "$i" ] && wcopt="$wcopt $i" && shift
+done
+
+pdftotext $* - | egrep -E '\w\w\w+' | wc $wcopt

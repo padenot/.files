@@ -1,0 +1,9 @@
+[user]
+	name = Paul ADENOT
+	email = paul@paul.cx
+[ui]
+	color = true
+[color]
+	ui = true
+[core]
+	editor = vim

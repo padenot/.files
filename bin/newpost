@@ -1,0 +1,150 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""
+Create a new post for Jekyll
+Should be run in the _posts directory
+Autocompletion of existing tags
+Remembers the byline in a config file
+"""
+
+import datetime
+import readline
+import re
+import unicodedata
+from unidecode import unidecode
+import codecs
+import subprocess
+import os
+import glob
+
+config = {}
+
+def get_config():
+    """
+    Get the byline from the configuration file, or store the name if we can't
+    find one.
+    """
+    try:
+        config = {}
+        f = codecs.open(os.environ['HOME'] + "/.jekyll_conf", "rU", "utf-8")
+        cfg = f.readlines()
+        for i in cfg:
+          k, v = i.split(": ")
+          config[k.strip()] = v.strip()
+        return config
+    except:
+        byline = prompt_byline()
+        f = codecs.open(os.environ['HOME'] + "/.jekyll_conf", "wU", "utf-8")
+        f.write("byline: " + byline)
+        f.close()
+        return {"byline": byline}
+
+
+def prompt_byline():
+    """
+    Prompt the user from a name
+    """
+    print 'Under which name do you want to sign from now on ?'
+    return raw_input("byline> ")
+
+
+def get_existing_tags():
+    """
+    Get the existing
+    """
+    files = glob.glob("*.mdwn")
+    if (len(files) == 0):
+        print "Warning: no .mdwn file found. First post or wrong directory ?"
+        print "Autocompletion of tags disabled."
+        return
+    command = 'grep "tags:" ' + " ".join(files) + ' | cut -d ":" -f3 | tr -d "[]"'
+    tags = subprocess.check_output(command, shell=True)
+    tags = tags.split(' ')
+    tags = [t.strip(" \n\t,") for t in tags]
+    tags = filter(None, tags)
+    tags = sorted(set(tags))
+    return tags
+
+def completer(word, index):
+    """
+    Completes the tags
+    """
+    matches = [c for c in candidates if c.startswith(word)]
+    try:
+        return matches[index]
+    except IndexError:
+        pass
+
+if __name__ == '__main__':
+    # Get the date of today
+    date = datetime.date.today().strftime('%Y-%m-%d')
+
+    # Get the config file
+    config = get_config()
+    print "This post will be signed under the name of " + config["byline"] + ", and dated of the " + date
+
+    # Get the tag that exist in old posts
+    candidates = get_existing_tags()
+
+
+    # Get a title. Remove utf-8 stuff (accents and such), and replace spaces and
+    # punctuation to hyphens, to be url compliant.
+    fileexist = True
+    while fileexist:
+        name = ""
+        while len(name) == 0:
+            print 'Post title ?'
+            try:
+                inputname = name = raw_input('title> ').decode('utf-8')
+            except EOFError:
+                print 'Abort !'
+                exit(1)
+
+        pattern = '(\'| |")'
+        name = re.sub(pattern, '-', name)
+        name = unidecode(name)
+        name = '-'.join([date, name])
+        name = name + '.mdwn'
+
+        try:
+            os.stat(name)
+        except:
+            fileexist = False
+            continue
+
+        print "Warning: the file already exists. Enter a new name."
+        fileexist = True
+
+
+
+
+    # Prompt for the tags, until the user enters an empty tag.
+    print 'Post tags ?'
+    readline.set_completer(completer)
+    readline.parse_and_bind("tab: complete")
+    tag=" "
+    tags=[]
+    while len(tag) != 0:
+      try:
+        tag = raw_input('tags> ')
+        tags.append(tag.strip())
+      except EOFError:
+        break
+
+    # Remove the empty tag (last one usually)
+    tags = filter(None, tags)
+
+    # Serialize the tags under jekyll's preamble form.
+    tags_serialized = '[' + ', '.join(tags) + ']'
+
+    # Write the preamble and exit
+    f = codecs.open(name, 'wU', encoding='utf-8')
+    f.write(u'---\n')
+    f.write("title: " + inputname+'\n')
+    f.write("tags: " + tags_serialized + '\n')
+    f.write("byline: " + config['byline'] + '\n')
+    f.write("layout: post\n")
+    f.write(u'---\n\n')
+    f.close()
+

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# $1 the file that has hunk that failed
+
+if [ -e "$1.rej" ]
+then
+  /usr/bin/gvim -O $1 "$1.rej"
+else
+  echo "$1.rej does not exit."
+fi

@@ -1,0 +1,18 @@
+[extensions]
+mq =
+qopen = ~/workspace/python/hg-tools/qopen
+qedit = ~/workspace/python/hg-tools/qedit
+trychooser = ~/workspace/repositories/trychooser/trychooser
+progress =
+
+[ui]
+username = Paul Adenot <paul@paul.cx>
+merge = meld
+
+[diff]
+git = 1
+showfunc = 1
+unified = 8
+
+[defaults]
+commit = -v

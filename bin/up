@@ -1,0 +1,4 @@
+#!/bin/sh
+
+rsync --progress --exclude=".git" -r "$1" paul.cx:/var/www/homepage/public/ && echo "http://paul.cx/public/"$1 | xclip&& echo "http://paul.cx/public/"$1
+
