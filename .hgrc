@@ -7,7 +7,6 @@ progress =
 
 [ui]
 username = Paul Adenot <paul@paul.cx>
-merge = meld
 
 [diff]
 git = 1

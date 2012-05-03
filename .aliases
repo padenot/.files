@@ -1,0 +1,57 @@
+alias pierro="beep -f 300 -r 3 -n -r 1 -f 330 -n -f 370 && sleep 0.5 && beep -f 330  && sleep 0.5 && beep -f 300 -n -r 1 -f 370 -n  -f 330 -r 2 -n -r 1 -f 300"
+
+alias xs='cd'
+alias sl='ls'
+
+alias ll='ls --color=auto -lh'
+alias lll='ls --color=auto -lh | less'
+
+
+alias df='df --human-readable'
+alias du='du --human-readable'
+
+alias ls='ls --classify --tabsize=0 --literal --color=auto --show-control-chars --human-readable'
+
+alias vpn='sudo vpnc-connect --enable-no-encryption vpn.conf'
+alias vpn='sudo vpnc-connect --enable-no-encryption vpn.conf||sudo vpnc --enable-no-encryption vpn.conf'
+
+alias -s pdf="evince "
+alias -s mp3="totem "
+
+export GREP_COLOR=31
+alias grep='grep --color=auto'
+
+alias op='gnome-open'
+
+alias monio='iostat -x -d  1 sda'
+
+alias loccount='find -regex ".*\.[ch]p?p?" -exec wc -l {} +;'
+alias tunnelbde='autossh -f orgaif@bde.insa-lyon.fr -L 3000:bde.insa-lyon.fr:3000 -N'
+alias tunnelbdevnc='autossh -f orgaif@bde.insa-lyon.fr -L 5901:bde.insa-lyon.fr:5900 -N'
+alias sshbde='autossh orgaif@bde.insa-lyon.fr'
+
+alias 'gpull'='git pull origin master'
+alias 'gpush'='git push origin master'
+
+clear_caches() {
+  sync
+  echo 3 | sudo tee /proc/sys/vm/drop_caches
+}
+
+alias 'ack'='ack-grep'
+
+alias 'make'='make -j8'
+
+alias 'make-notify'='make $1 &&  notify-send "build ended" || notify-send "build errored"'
+
+alias 'reftest-open'='grep -o "data:.*$" /tmp/reftest | xargs firefox'
+alias 'gcc'='colorgcc'
+
+alias 'irc'="mosh paul@paul.cx 'tmux -u attach'"
+
+alias 'nsprlog'='export NSPR_LOG_MODULES=$1:5'
+alias 'checkpatch'='hg qdiff | less'
+
+alias 'ake'='make'
+alias tunneltorrent='autossh -f paul@paul.cx -L 9091:paul.cx:9091 -N'
+alias proxypaul='autossh -D 1234 paul@paul.cx -N'
