@@ -54,4 +54,4 @@ alias 'checkpatch'='hg qdiff | less'
 
 alias 'ake'='make'
 alias tunneltorrent='autossh -f paul@paul.cx -L 9091:paul.cx:9091 -N'
-alias proxypaul='autossh -D 1234 paul@paul.cx -N'
+alias proxypaul='ssh -D 1234 paul@paul.cx -N'

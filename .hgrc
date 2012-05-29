@@ -4,6 +4,7 @@ qopen = ~/workspace/python/hg-tools/qopen
 qedit = ~/workspace/python/hg-tools/qedit
 trychooser = ~/workspace/repositories/trychooser/trychooser
 progress =
+crecord = ~/workspace/repositories/crecord/
 
 [ui]
 username = Paul Adenot <paul@paul.cx>
@@ -15,3 +16,4 @@ unified = 8
 
 [defaults]
 commit = -v
+qnew = -Ue
