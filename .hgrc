@@ -1,13 +1,33 @@
 [extensions]
-mq =
-qopen = ~/workspace/python/hg-tools/qopen
-qedit = ~/workspace/python/hg-tools/qedit
-trychooser = ~/workspace/repositories/trychooser/trychooser
-progress =
-crecord = ~/workspace/repositories/crecord/
+mq = 
+#qopen = ~/src/repositories/hg-tools/qopen
+qedit = ~/src/repositories/hg-tools/qedit
+qstats = ~/src/repositories/hg-tools/qstats
+trychooser = ~/src/repositories/trychooser/
+progress = 
+crecord = ~/src/repositories/crecord/
+color = 
+bzexport = ~/.mozbuild/version-control-tools/hgext/bzexport
+pager = 
+rebase = 
+# watchman = ~/src/repositories/hgwatchman/hgwatchman/
+chart = /home/padenot/src/repositories/hg-chart-extension/hgext/chart.py
+activity = /home/padenot/src/repositories/Hgactivity/activity
+qbackout = /home/padenot/src/repositories/qbackout
+histedit = 
+reviewboard = /home/padenot/.mozbuild/version-control-tools/hgext/reviewboard/client.py
+firefoxtree = ~/.mozbuild/version-control-tools/hgext/firefoxtree
+bundleclone = ~/.mozbuild/version-control-tools/hgext/bundleclone
+push-to-try = ~/.mozbuild/version-control-tools/hgext/push-to-try
+mqext = ~/.mozbuild/version-control-tools/hgext/mqext
+qimportbz = ~/.mozbuild/version-control-tools/hgext/qimportbz
+fsmonitor = 
+blackbox = 
+purge = 
 
 [ui]
 username = Paul Adenot <paul@paul.cx>
+interface = curses
 
 [diff]
 git = 1
@@ -17,3 +37,46 @@ unified = 8
 [defaults]
 commit = -v
 qnew = -Ue
+qseries = -s
+
+[alias]
+qstatus = status --rev -2:.
+wip = log --graph --rev=wip --template=wip
+
+[auth]
+w3c.prefix = https://dvcs.w3.org/hg/
+w3c.username = padenot
+[mqext]
+mqcommit = yes
+[hostfingerprints]
+[bugzilla]
+username = padenot@mozilla.com
+apikey = dtNJqQlOA4AtULXEKBV25ILOGnnpN7HuF7kDB9Bl
+[mozilla]
+ircnick = padenot
+
+[paths]
+# For SSH pushing
+review = ssh://paul@paul.cx@reviewboard-hg.mozilla.org/autoreview
+[revsetalias]
+wip = (parents(not public()) or not public() or . or (head() and branch(default))) and (not obsolete() or unstable()^) and not closed() and not (fxheads() - date(-90))
+[templates]
+wip = '{label("wip.branch", if(branches,"{branches} "))}{label(ifeq(graphnode,"x","wip.obsolete","wip.{phase}"),"{rev}:{node|short}")}{label("wip.user", " {author|user}")}{label("wip.tags", if(tags," {tags}"))}{label("wip.tags", if(fxheads," {fxheads}"))}{if(bookmarks," ")}{label("wip.bookmarks", if(bookmarks,bookmarks))}{label(ifcontains(rev, revset("parents()"), "wip.here"), " {desc|firstline}")}'
+[pager]
+pager = LESS=FRSXQ less
+attend-help = true
+attend-incoming = true
+attend-outgoing = true
+attend-status = true
+attend-wip = true
+[color]
+wip.bookmarks = yellow underline
+wip.branch = yellow
+wip.draft = green
+wip.here = red
+wip.obsolete = none
+wip.public = blue
+wip.tags = yellow
+wip.user = magenta
+[experimental]
+graphshorten = true

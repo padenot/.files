@@ -6,7 +6,7 @@ list=$(vim --serverlist)
 
 if [ -z "$list" ]
 then
-  /usr/bin/gvim $*
+  /usr/bin/vim $*
 else
-  /usr/bin/gvim --remote-silent $*
+  /usr/bin/vim --remote-silent $*
 fi

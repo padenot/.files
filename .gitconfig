@@ -1,9 +1,13 @@
 [user]
-	name = Paul ADENOT
-	email = paul@paul.cx
-[ui]
-	color = true
+  email = paul@paul.cx
+  name = Paul Adenot
 [color]
-	ui = true
+  ui = auto
+[push]
+  default = simple
 [core]
-	editor = vim
+  editor = nvim
+  pager = less -+F
+[alias]
+  co = checkout
+  cob = checkout -b

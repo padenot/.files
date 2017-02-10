@@ -1,0 +1,4 @@
+#!/bin/sh
+
+pacmd list-sinks | awk '/index:/ {p=$1=="*"}; p==1 && /latency/ {print $0}'
+

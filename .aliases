@@ -38,14 +38,13 @@ clear_caches() {
   echo 3 | sudo tee /proc/sys/vm/drop_caches
 }
 
-alias 'ack'='ack-grep'
+alias 'ack'='~/local/ag/bin/ag'
 
 alias 'make'='make -j8'
 
 alias 'make-notify'='make $1 &&  notify-send "build ended" || notify-send "build errored"'
 
 alias 'reftest-open'='grep -o "data:.*$" /tmp/reftest | xargs firefox'
-alias 'gcc'='colorgcc'
 
 alias 'irc'="mosh paul@paul.cx 'tmux -u attach'"
 
@@ -55,3 +54,10 @@ alias 'checkpatch'='hg qdiff | less'
 alias 'ake'='make'
 alias tunneltorrent='autossh -f paul@paul.cx -L 9091:paul.cx:9091 -N'
 alias proxypaul='ssh -D 1234 paul@paul.cx -N'
+
+alias datafart='curl --data-binary @- datafart.com'
+
+alias nix='nix-env'
+alias b='./mach build binaries'
+
+alias xvfb="xvfb-run -a -s '-screen 0 640x480x24'"
