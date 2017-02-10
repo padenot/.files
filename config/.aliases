@@ -10,8 +10,6 @@ alias lll='ls --color=auto -lh | less'
 alias df='df --human-readable'
 alias du='du --human-readable'
 
-alias ls='ls --classify --tabsize=0 --literal --color=auto --show-control-chars --human-readable'
-
 alias vpn='sudo vpnc-connect --enable-no-encryption vpn.conf'
 alias vpn='sudo vpnc-connect --enable-no-encryption vpn.conf||sudo vpnc --enable-no-encryption vpn.conf'
 
