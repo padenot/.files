@@ -76,7 +76,7 @@ export LLVM_HOME="/home/paul/workspace/repositories/llvm/"
 
 autoload bashcompinit
 bashcompinit
-source /home/padenot/src/trees/mozilla-central/python/mach/bash-completion.sh
+source ~/src/trees/mozilla-central/python/mach/bash-completion.sh
 
 GPGKEY=CB9258FD
 

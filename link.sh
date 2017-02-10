@@ -1,8 +1,8 @@
 #/bin/sh
 
-for i in $(ls -A -I link.sh -I .git)
+for i in `ls -A config`
 do
-  ln -f -s $(pwd)/$i ~/$i
+  ln -f -s $(pwd)/config/$i ~/$i
 done
 
 git submodule init
