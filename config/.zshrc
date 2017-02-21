@@ -1,3 +1,5 @@
+setopt promptsubst
+
 source ~/.files/scm-prompt.sh
 
 # Path to your oh-my-zsh configuration.
@@ -82,6 +84,5 @@ GPGKEY=CB9258FD
 
 export PATH="$HOME/.cargo/bin:$PATH"
 
-setopt PROMPT_SUBST
 
 

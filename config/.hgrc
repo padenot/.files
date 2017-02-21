@@ -1,19 +1,11 @@
 [extensions]
 mq = 
-#qopen = ~/src/repositories/hg-tools/qopen
-qedit = ~/src/repositories/hg-tools/qedit
-qstats = ~/src/repositories/hg-tools/qstats
-trychooser = ~/src/repositories/trychooser/
 progress = 
-crecord = ~/src/repositories/crecord/
 color = 
 bzexport = ~/.mozbuild/version-control-tools/hgext/bzexport
 pager = 
 rebase = 
 # watchman = ~/src/repositories/hgwatchman/hgwatchman/
-chart = /home/padenot/src/repositories/hg-chart-extension/hgext/chart.py
-activity = /home/padenot/src/repositories/Hgactivity/activity
-qbackout = /home/padenot/src/repositories/qbackout
 histedit = 
 reviewboard = /home/padenot/.mozbuild/version-control-tools/hgext/reviewboard/client.py
 firefoxtree = ~/.mozbuild/version-control-tools/hgext/firefoxtree
