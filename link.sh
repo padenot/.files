@@ -7,4 +7,4 @@ done
 
 git submodule init
 git submodule update
-ln -s `pwd`/paul.zsh-theme oh-my-zsh/themes/paul.zsh-theme
+ln -s `pwd`/paul.zsh-theme oh-my-zsh/custom/
