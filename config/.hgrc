@@ -2,20 +2,17 @@
 mq = 
 progress = 
 color = 
-bzexport = ~/.mozbuild/version-control-tools/hgext/bzexport
 pager = 
 rebase = 
 # watchman = ~/src/repositories/hgwatchman/hgwatchman/
 histedit = 
-reviewboard = /home/padenot/.mozbuild/version-control-tools/hgext/reviewboard/client.py
-firefoxtree = ~/.mozbuild/version-control-tools/hgext/firefoxtree
-bundleclone = ~/.mozbuild/version-control-tools/hgext/bundleclone
-push-to-try = ~/.mozbuild/version-control-tools/hgext/push-to-try
-mqext = ~/.mozbuild/version-control-tools/hgext/mqext
-qimportbz = ~/.mozbuild/version-control-tools/hgext/qimportbz
 fsmonitor = 
 blackbox = 
 purge = 
+firefoxtree = ~/.mozbuild/version-control-tools/hgext/firefoxtree
+reviewboard = ~/.mozbuild/version-control-tools/hgext/reviewboard/client.py
+bzexport = ~/.mozbuild/version-control-tools/hgext/bzexport
+push-to-try = ~/.mozbuild/version-control-tools/hgext/push-to-try
 
 [ui]
 username = Paul Adenot <paul@paul.cx>

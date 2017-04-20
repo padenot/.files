@@ -1,4 +1,12 @@
 #!/bin/sh
 
-rsync --progress --exclude=".git" -r "$1" paul@paul.cx:/var/www/homepage/public/ && echo "http://paul.cx/public/"$1 | xclip&& echo "http://paul.cx/public/"$1
+osx=`which pbcopy`
+if [ -z $osx ]
+then
+CLIPBOARD=xclip
+else
+CLIPBOARD=pbcopy
+fi
+
+rsync --progress --exclude=".git" -r "$1" paul@paul.cx:/var/www/homepage/public/ && echo "http://paul.cx/public/"$1 | $CLIPBOARD && echo "http://paul.cx/public/"$1
 
