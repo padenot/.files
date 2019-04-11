@@ -19,7 +19,7 @@ alias -s mp3="totem "
 export GREP_COLOR=31
 alias grep='grep --color=auto'
 
-alias op='gnome-open'
+alias op='xdg-open'
 
 alias monio='iostat -x -d  1 sda'
 
@@ -59,3 +59,5 @@ alias nix='nix-env'
 alias b='./mach build binaries'
 
 alias xvfb="xvfb-run -a -s '-screen 0 640x480x24'"
+
+alias vim=nvim

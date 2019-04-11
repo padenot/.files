@@ -1,25 +1,39 @@
 [extensions]
-mq = 
-progress = 
-color = 
-bzexport = ~/.mozbuild/version-control-tools/hgext/bzexport
-pager = 
+strip = 
 rebase = 
-# watchman = ~/src/repositories/hgwatchman/hgwatchman/
 histedit = 
-reviewboard = /home/padenot/.mozbuild/version-control-tools/hgext/reviewboard/client.py
 firefoxtree = ~/.mozbuild/version-control-tools/hgext/firefoxtree
-bundleclone = ~/.mozbuild/version-control-tools/hgext/bundleclone
 push-to-try = ~/.mozbuild/version-control-tools/hgext/push-to-try
-mqext = ~/.mozbuild/version-control-tools/hgext/mqext
-qimportbz = ~/.mozbuild/version-control-tools/hgext/qimportbz
 fsmonitor = 
 blackbox = 
+shelve = 
+absorb = ~/src/repositories/hg-experimental/hgext3rd/absorb/
+fastannotate = ~/src/repositories/hg-experimental/hgext3rd/fastannotate
+chistedit = ~/src/repositories/hg-experimental/hgext3rd/chistedit.py
+show = 
 purge = 
+phabricator = /home/padenot/src/repositories/hgext/phabricator.py
+format-source = /home/padenot/.mozbuild/version-control-tools/hgext/format-source
+# evolve = /home/padenot/.mozbuild/evolve/hgext3rd/evolve
+evolve = 
+topic = 
+clang-format = /home/padenot/.mozbuild/version-control-tools/hgext/clang-format
+
+
+[phabricator]
+url = https://phabricator.services.mozilla.com/
+callsign = MOZILLACENTRAL
+
+[auth]
+mozilla.schemes = https
+mozilla.prefix = phabricator.services.mozilla.com
+mozilla.phabtoken = cli-htuut5v5pbvq4emjdxc7bk34njbr
 
 [ui]
 username = Paul Adenot <paul@paul.cx>
 interface = curses
+ignore = ~/.hgignore
+tweakdefaults = true
 
 [diff]
 git = 1
@@ -28,19 +42,17 @@ unified = 8
 
 [defaults]
 commit = -v
-qnew = -Ue
-qseries = -s
+absorb = -p
+phabsend = --confirm
 
 [alias]
-qstatus = status --rev -2:.
 wip = log --graph --rev=wip --template=wip
+current = log --rev "not public() and ancestors(.)" --template=revfiles
+files = log --template=revfiles
+last = diff -c .
+absorb = absorb -p
+smart-annotate = annotate -w --skip ignored_changesets
 
-[auth]
-w3c.prefix = https://dvcs.w3.org/hg/
-w3c.username = padenot
-[mqext]
-mqcommit = yes
-[hostfingerprints]
 [bugzilla]
 username = padenot@mozilla.com
 apikey = dtNJqQlOA4AtULXEKBV25ILOGnnpN7HuF7kDB9Bl
@@ -51,16 +63,11 @@ ircnick = padenot
 # For SSH pushing
 review = ssh://paul@paul.cx@reviewboard-hg.mozilla.org/autoreview
 [revsetalias]
-wip = (parents(not public()) or not public() or . or (head() and branch(default))) and (not obsolete() or unstable()^) and not closed() and not (fxheads() - date(-90))
+wip = (parents(not public()) or not public() or . or (head() and branch(default))) and (not obsolete() or orphan()^) and not closed() and not (fxheads() - date(-90))
+ignored_changesets = desc("ignore-this-changeset") or extdata(get_ignored_changesets)
 [templates]
 wip = '{label("wip.branch", if(branches,"{branches} "))}{label(ifeq(graphnode,"x","wip.obsolete","wip.{phase}"),"{rev}:{node|short}")}{label("wip.user", " {author|user}")}{label("wip.tags", if(tags," {tags}"))}{label("wip.tags", if(fxheads," {fxheads}"))}{if(bookmarks," ")}{label("wip.bookmarks", if(bookmarks,bookmarks))}{label(ifcontains(rev, revset("parents()"), "wip.here"), " {desc|firstline}")}'
-[pager]
-pager = LESS=FRSXQ less
-attend-help = true
-attend-incoming = true
-attend-outgoing = true
-attend-status = true
-attend-wip = true
+revfiles='{label("revfiles.rev", rev)} {desc|firstline}\n\t{label("revfiles.files", sub(" ", "\n\t", files))}\n'
 [color]
 wip.bookmarks = yellow underline
 wip.branch = yellow
@@ -70,5 +77,12 @@ wip.obsolete = none
 wip.public = blue
 wip.tags = yellow
 wip.user = magenta
+revfiles.rev = red underline
+revfiles.files = green
 [experimental]
 graphshorten = true
+[extdata]
+get_ignored_changesets = shell:cat `hg root`/.hg-annotate-ignore-revs 2> /dev/null || true
+
+[pager]
+pager = LESS='FRX' less
