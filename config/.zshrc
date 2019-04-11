@@ -21,6 +21,8 @@ export PATH=$PATH:$HOME/bin:/var/lib/gems/1.8/bin
 export PATH=$PATH:/home/paul/bin/android-sdk-linux_86/platform-tools/
 export PATH=$PATH:/home/paul/bin/android-sdk-linux_86/tools/
 export PATH=$PATH:$HOME/bin/mozilla-utils
+export PATH=$PATH:~/local/adt-bundle-linux/sdk/platform-tools/
+export PATH="$HOME/.cargo/bin:$PATH"
 source ~/.aliases
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
@@ -31,7 +33,7 @@ export EDITOR="nvim"
 export HGEDITOR="nvim"
 export CODEEDITOR="/home/padenot/bin/e"
 
-source ~/.colors
+# source ~/.colors
 
 if [ -e /usr/share/terminfo/x/xterm-256color ]; then
         export TERM='xterm-256color'
@@ -54,7 +56,6 @@ for i in $(ls $HOME/local/); do
   [ -d $p/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
 done
 
-PATH=$PATH:~/local/adt-bundle-linux/sdk/platform-tools/
 
 SSHAGENT=/usr/bin/ssh-agent
 SSHAGENTARGS="-s"
@@ -66,7 +67,10 @@ fi
 
 autoload bashcompinit
 bashcompinit
-source ~/src/trees/mozilla-unified/python/mach/bash-completion.sh
+if [ -e ~/src/trees/mozilla-unified/python/mach/bash-completion.sh ]
+then
+  source ~/src/trees/mozilla-unified/python/mach/bash-completion.sh
+fi
 
 GPGKEY=CB9258FD
 
