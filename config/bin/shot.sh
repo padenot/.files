@@ -1,10 +1,9 @@
 #!/bin/sh
 
 # Usage : shot.sh, select a zone of the screen.
-
 filename="`date +%s`.png"
 
-scrot -s -q 100 /tmp/$filename
+gnome-screenshot -a -f /tmp/$filename
 cd /tmp/
 up $filename
 
