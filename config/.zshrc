@@ -2,6 +2,8 @@ setopt promptsubst
 
 source ~/.files/scm-prompt.sh
 
+export FZF_BASE="/home/linuxbrew/.linuxbrew/opt/fzf"
+
 export ZSH_CUSTOM=$HOME/.files/zsh_custom
 
 # Path to your oh-my-zsh configuration.
@@ -11,7 +13,7 @@ export ZSH=$HOME/.files/oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 export ZSH_THEME="paul"
 
-plugins=(git command-not-found debian npm fzf)
+plugins=(git debian fzf mach)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -20,7 +22,6 @@ export PATH=/home/paul/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sb
 export PATH=$PATH:$HOME/bin:/var/lib/gems/1.8/bin
 export PATH=$PATH:/home/paul/bin/android-sdk-linux_86/platform-tools/
 export PATH=$PATH:/home/paul/bin/android-sdk-linux_86/tools/
-export PATH=$PATH:$HOME/bin/mozilla-utils
 export PATH=$PATH:~/local/adt-bundle-linux/sdk/platform-tools/
 export PATH="$HOME/.cargo/bin:$PATH"
 source ~/.aliases
@@ -32,8 +33,6 @@ alias zless=$PAGER
 export EDITOR="nvim"
 export HGEDITOR="nvim"
 export CODEEDITOR="/home/padenot/bin/e"
-
-# source ~/.colors
 
 if [ -e /usr/share/terminfo/x/xterm-256color ]; then
         export TERM='xterm-256color'
@@ -56,7 +55,6 @@ for i in $(ls $HOME/local/); do
   [ -d $p/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
 done
 
-
 SSHAGENT=/usr/bin/ssh-agent
 SSHAGENTARGS="-s"
 if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
@@ -65,12 +63,11 @@ if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
   ssh-add ~/.ssh/id_rsa
 fi
 
-autoload bashcompinit
-bashcompinit
-if [ -e ~/src/trees/mozilla-unified/python/mach/bash-completion.sh ]
-then
-  source ~/src/trees/mozilla-unified/python/mach/bash-completion.sh
-fi
+autoload -Uz compinit
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
 
 GPGKEY=CB9258FD
 
@@ -83,5 +80,23 @@ export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 export PATH="$PATH:/snap/bin"
 export PATH="$PATH:$HOME/.mozbuild/tup/"
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="/home/padenot/local/icecream/libexec/icecc/bin:$PATH"
 export PATH="/home/padenot/.mozbuild/android-sdk-linux/platform-tools/:$PATH"
+# export PATH=/usr/lib/icecc/bin:$PATH
+
+pernosco-submit () { (. /home/padenot/.pernosco-mozilla-creds; /home/padenot/src/repositories/pernosco-submit/pernosco-submit "$@") }
+
+alias tmux="TERM=screen-256color-bce tmux"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
+export PATH="$HOME/.local/bin/:$PATH"
+
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+  source /etc/profile.d/vte.sh
+fi
+
+export NVIM_LISTEN_ADDRESS=localhost:6666
+export PATH="/home/padenot/.mozbuild/git-cinnabar:$PATH"

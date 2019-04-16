@@ -1,12 +1,21 @@
-#!/bin/sh -x
+#!/bin/sh -xe
 
-# Connect to an existing gvim instance, or run a gvim if none is available
 
-list=$(vim --serverlist)
-
-if [ -z "$list" ]
+if ! pgrep -x "nvim --headless"
 then
-  /usr/bin/vim $*
-else
-  /usr/bin/vim --remote-silent $*
+  echo "Running headless vim"
+  nohup nvim --headless &
 fi
+
+if ! pgrep "neovide"
+then
+  echo "Running neovide"
+  nohup neovide --remote-tcp=localhost:6666 --multiGrid &
+fi
+
+nvr --servername localhost:6666 $*
+
+# this shouldn't be necessary but is
+nvr -c ':colorscheme solarized8'
+
+wmctrl -a Neovide

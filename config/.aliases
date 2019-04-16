@@ -60,4 +60,13 @@ alias b='./mach build binaries'
 
 alias xvfb="xvfb-run -a -s '-screen 0 640x480x24'"
 
-alias vim=nvim
+alias vim=e
+
+build() {
+  mach build 2>&1 | parseerr
+}
+
+mach() {
+  ./mach $*
+}
+

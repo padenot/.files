@@ -5,17 +5,18 @@ histedit =
 fsmonitor = 
 blackbox = 
 shelve = 
-absorb = ~/src/repositories/hg-experimental/hgext3rd/absorb/
-fastannotate = ~/src/repositories/hg-experimental/hgext3rd/fastannotate
-chistedit = ~/src/repositories/hg-experimental/hgext3rd/chistedit.py
 show = 
 purge = 
-phabricator = /home/padenot/src/repositories/hgext/phabricator.py
-format-source = /home/padenot/.mozbuild/version-control-tools/hgext/format-source
-# evolve = /home/padenot/.mozbuild/evolve/hgext3rd/evolve
-evolve = 
-topic = 
+evolve = /home/padenot/.mozbuild/evolve/hgext3rd/evolve
+firefoxtree = /home/padenot/.mozbuild/version-control-tools/hgext/firefoxtree
+push-to-try = /home/padenot/.mozbuild/version-control-tools/hgext/push-to-try
+js-format = /home/padenot/.mozbuild/version-control-tools/hgext/js-format
+mozext = /home/padenot/.mozbuild/version-control-tools/hgext/mozext/
+absorb = 
 clang-format = /home/padenot/.mozbuild/version-control-tools/hgext/clang-format
+share = 
+convert = 
+phabricator = ~/src/repositories/phabsend-moz/phabricator.py
 
 
 [phabricator]
@@ -23,20 +24,22 @@ url = https://phabricator.services.mozilla.com/
 callsign = MOZILLACENTRAL
 
 [auth]
-mozilla.schemes = https
-mozilla.prefix = phabricator.services.mozilla.com
-mozilla.phabtoken = cli-htuut5v5pbvq4emjdxc7bk34njbr
+mozphab.scheme = https
+mozphab.prefix = phabricator.services.mozilla.com
+mozphab.phabtoken = cli-tcfwrgc63knnvwzueh67wm522vmo
 
 [ui]
 username = Paul Adenot <paul@paul.cx>
 interface = curses
 ignore = ~/.hgignore
 tweakdefaults = true
+merge = internal:merge3
 
 [diff]
 git = 1
 showfunc = 1
 unified = 8
+word-diff = true
 
 [defaults]
 commit = -v
@@ -46,14 +49,14 @@ phabsend = --confirm
 [alias]
 wip = log --graph --rev=wip --template=wip
 current = log --rev "not public() and ancestors(.)" --template=revfiles
-files = log --template=revfiles
+#files = log --template=revfiles
 last = diff -c .
 absorb = absorb -p
 smart-annotate = annotate -w --skip ignored_changesets
+format-patch = export -o "%n-%m
 
 [bugzilla]
 username = padenot@mozilla.com
-apikey = dtNJqQlOA4AtULXEKBV25ILOGnnpN7HuF7kDB9Bl
 [mozilla]
 ircnick = padenot
 
@@ -65,7 +68,7 @@ wip = (parents(not public()) or not public() or . or (head() and branch(default)
 ignored_changesets = desc("ignore-this-changeset") or extdata(get_ignored_changesets)
 [templates]
 wip = '{label("wip.branch", if(branches,"{branches} "))}{label(ifeq(graphnode,"x","wip.obsolete","wip.{phase}"),"{rev}:{node|short}")}{label("wip.user", " {author|user}")}{label("wip.tags", if(tags," {tags}"))}{label("wip.tags", if(fxheads," {fxheads}"))}{if(bookmarks," ")}{label("wip.bookmarks", if(bookmarks,bookmarks))}{label(ifcontains(rev, revset("parents()"), "wip.here"), " {desc|firstline}")}'
-revfiles='{label("revfiles.rev", rev)} {desc|firstline}\n\t{label("revfiles.files", sub(" ", "\n\t", files))}\n'
+revfiles = '{label("revfiles.rev", rev)} {desc|firstline}\n\t{label("revfiles.files", sub(" ", "\n\t", files))}\n'
 [color]
 wip.bookmarks = yellow underline
 wip.branch = yellow
@@ -84,3 +87,5 @@ get_ignored_changesets = shell:cat `hg root`/.hg-annotate-ignore-revs 2> /dev/nu
 
 [pager]
 pager = LESS='FRX' less
+[rebase]
+experimental.inmemory = yes
