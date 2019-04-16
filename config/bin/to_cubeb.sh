@@ -3,6 +3,7 @@
 IFS=$'\n'
 patch_count=0
 DEST_REPO=$2
+TMP_PATCH_DIR=`mktemp -d`
 
 usage() {
   echo "usage()"
@@ -12,26 +13,27 @@ usage() {
 
 if [ $# -ne 2 ]
 then
-  usage() $0
+  usage $0
   exit 1
 fi
 
 if [ ! -d $2 ]
 then
-  usage() $0
+  usage $0
 fi
 
 # arbitrary file that we know is in cubeb
 if [ ! -e "$2/cubeb.supp" ]
 then
-  usage() $0
+  usage $0
 fi
 
-for i in `hg log -r $1 and file("/media/libcubeb") --template "{rev} {files}\n"`
+for i in `hg log -r "$1 and file('media/libcubeb/**')" --template "{rev} {files}\n"`
 do
   IFS=" "
-  rev=`echo $i | cut -d ' ' -f1`
-  files=(`echo $i | cut -d ' ' -f2-`)
+  echo $i
+  rev=$(echo "$i" | cut -d ' ' -f1)
+  files=(`echo "$i" | cut -d ' ' -f2-`)
   file_count=${#files[@]}
 
   if [[ $file_count -ne 1 ]]
@@ -47,8 +49,7 @@ do
     fi
   done
   echo $rev " contains only cubeb changes, exporting..."
-  hg export --git -r $rev > "$patch_count"
-  ./hg-patch-to-git-patch < $patch_count > "$patch_count"_git
+  hg export --git -r $rev | hg-patch-to-git-patch > $TMP_PATCH_DIR/"$patch_count"
   patch_count=$((patch_count + 1))
 done
 
@@ -60,13 +61,10 @@ then
   echo "git repo dirty, exiting"
 fi
 
-for i in ls *_git
+for i in *_git
 do
   git am -p3 $DOWNSTREAM/$i
 done
 
 cd -
-rm `seq 0 $patch_count`
-rm *_git
-
-
+rm -r $TMP_PATCH_DIR
