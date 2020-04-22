@@ -9,12 +9,16 @@ setopt promptsubst
 
 source ~/.files/scm-prompt.sh
 
+export ZSH_CUSTOM=$HOME/.files/zsh_custom
+
 # Path to your oh-my-zsh configuration.
 export ZSH=$HOME/.files/oh-my-zsh
 
 # Set to the name theme to load.
 # Look in ~/.oh-my-zsh/themes/
 export ZSH_THEME="paul"
+
+plugins=(git command-not-found debian npm fzf)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -68,21 +72,23 @@ if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
   ssh-add ~/.ssh/id_rsa
 fi
 
-export LLVM_HOME="/home/paul/workspace/repositories/llvm/"
-
 autoload bashcompinit
 bashcompinit
-source ~/src/trees/mozilla-unified/python/mach/bash-completion.sh
+if [ -e ~/src/trees/mozilla-unified/python/mach/bash-completion.sh ]
+then
+  source ~/src/trees/mozilla-unified/python/mach/bash-completion.sh
+fi
 
 export GPGKEY=CB9258FD
 
-alias vim=nvim
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-alias ❤️='ls'
-
+PATH=$PATH:~/.cargo/bin
+export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
-
-export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-export PATH="/Users/padenot/src/repositories/emsdk:/Users/padenot/src/repositories/emsdk/upstream/emscripten:/Users/padenot/src/repositories/emsdk/node/12.9.1_64bit/bin:$PATH"
+export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+export PATH="$PATH:/snap/bin"
+export PATH="$PATH:$HOME/.mozbuild/tup/"
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="/home/padenot/local/icecream/libexec/icecc/bin:$PATH"
+export PATH="/home/padenot/.mozbuild/android-sdk-linux/platform-tools/:$PATH"
