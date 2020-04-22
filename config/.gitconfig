@@ -11,3 +11,6 @@
 [alias]
   co = checkout
   cob = checkout -b
+  dif = diff
+  staged = diff --staged
+  dif = diff

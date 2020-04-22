@@ -1,3 +1,10 @@
+unset LSCOLORS
+export CLICOLOR=1
+export CLICOLOR_FORCE=1
+export TERM="xterm-256color"
+
+export LC_ALL=en_US.UTF-8
+
 setopt promptsubst
 
 source ~/.files/scm-prompt.sh
@@ -23,11 +30,10 @@ source ~/.aliases
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
-export HGMERGE=meld
 alias less=$PAGER
 alias zless=$PAGER 
-export EDITOR="vim"
-export HGEDITOR="vim"
+export EDITOR="nvim"
+export HGEDITOR="nvim"
 export CODEEDITOR="/home/padenot/bin/e"
 
 # source ~/.colors
@@ -66,10 +72,17 @@ export LLVM_HOME="/home/paul/workspace/repositories/llvm/"
 
 autoload bashcompinit
 bashcompinit
-source ~/src/trees/mozilla-central/python/mach/bash-completion.sh
+source ~/src/trees/mozilla-unified/python/mach/bash-completion.sh
 
-GPGKEY=CB9258FD
+export GPGKEY=CB9258FD
 
 alias vim=nvim
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+alias ❤️='ls'
+
+eval "$(rbenv init -)"
+
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+export PATH="/Users/padenot/src/repositories/emsdk:/Users/padenot/src/repositories/emsdk/upstream/emscripten:/Users/padenot/src/repositories/emsdk/node/12.9.1_64bit/bin:$PATH"
