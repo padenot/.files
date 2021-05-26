@@ -1,2 +1,4 @@
 .ssh
+~/.arcrc
 oh-my-zsh/themes/paul.zsh-theme
+nohup.out

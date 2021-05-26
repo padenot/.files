@@ -4,7 +4,7 @@
 
 if [ -e "$1.rej" ]
 then
-  e -O $1 "$1.rej"
+  nvim -O $1 "$1.rej"
 else
   echo "$1.rej does not exit."
 fi

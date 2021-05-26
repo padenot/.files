@@ -1,0 +1,3 @@
+#!/bin/sh
+
+scp padenot@padenot.corp.par2.mozilla.com:$1 .
