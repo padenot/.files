@@ -16,3 +16,5 @@
   dif = diff
 [secrets]
   patterns = cli-[a-zA-Z0-9_]*
+[init]
+	defaultBranch = main
