@@ -63,16 +63,6 @@ for i in $(ls $HOME/local/); do
   [ -d $p/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
 done
 fi
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> e4531f07862833e45af8f96d19cd852dc21abedd
-=======
->>>>>>> e4531f07862833e45af8f96d19cd852dc21abedd
-
->>>>>>> e4531f07862833e45af8f96d19cd852dc21abedd
 
 SSHAGENT=/usr/bin/ssh-agent
 SSHAGENTARGS="-s"
