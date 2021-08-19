@@ -64,7 +64,10 @@ for i in $(ls $HOME/local/); do
 done
 fi
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> e4531f07862833e45af8f96d19cd852dc21abedd
 
 >>>>>>> e4531f07862833e45af8f96d19cd852dc21abedd
 
