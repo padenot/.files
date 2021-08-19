@@ -63,6 +63,10 @@ for i in $(ls $HOME/local/); do
   [ -d $p/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
 done
 fi
+<<<<<<< HEAD
+=======
+
+>>>>>>> e4531f07862833e45af8f96d19cd852dc21abedd
 
 SSHAGENT=/usr/bin/ssh-agent
 SSHAGENTARGS="-s"
@@ -83,9 +87,6 @@ GPGKEY=CB9258FD
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 PATH=$PATH:~/.cargo/bin
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 export PATH="$PATH:/snap/bin"
 export PATH="$PATH:$HOME/.mozbuild/tup/"
 export PATH="$PATH:$HOME/.local/bin"
