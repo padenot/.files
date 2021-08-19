@@ -48,6 +48,8 @@ fi
 
 setopt no_correctall
 
+if [ -e local ]
+then
 for i in $(ls $HOME/local/); do
   p="$HOME/local/$i"
   [ -d $p/bin ] && PATH="${p}/bin:${PATH}"
@@ -60,6 +62,7 @@ for i in $(ls $HOME/local/); do
   [ -d $p/lib/pkgconfig ] && PKG_CONFIG_PATH="${p}/lib/pkgconfig:${PKG_CONFIG_PATH}"
   [ -d $p/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
 done
+fi
 
 SSHAGENT=/usr/bin/ssh-agent
 SSHAGENTARGS="-s"
@@ -112,9 +115,6 @@ export GPGKEY=CB9258FD
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 PATH=$PATH:~/.cargo/bin
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 export PATH="$PATH:/snap/bin"
 export PATH="$PATH:$HOME/.mozbuild/tup/"
 export PATH="$PATH:$HOME/.local/bin"
