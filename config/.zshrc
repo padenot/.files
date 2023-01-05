@@ -51,20 +51,20 @@ fi
 
 setopt no_correctall
 
-if [ -d $HOME/local ]
+if [ -e $HOME/local ]
 then
-for i in $(ls --color=never $HOME/local/); do
-  p="$HOME/local/${i}"
-  [ -d ${p}/bin ] && PATH="${p}/bin:${PATH}"
-  [ -d ${p}/sbin ] && PATH="${p}/sbin:${PATH}"
-  [ -d ${p}/include ] && CPATH="${p}/include:${CPATH}"
-  [ -d ${p}/lib ] && LD_LIBRARY_PATH="${p}/lib:${LD_LIBRARY_PATH}"
-  [ -d ${p}/lib ] && LD_RUN_PATH="${p}/lib:${LD_RUN_PATH}"
-# uncomment the following if you use macintosh
-  [ -d ${p}/lib ] && DYLD_LIBRARY_PATH="${i}/lib:${DYLD_LIBRARY_PATH}"
-  [ -d ${p}/lib/pkgconfig ] && PKG_CONFIG_PATH="${p}/lib/pkgconfig:${PKG_CONFIG_PATH}"
-  [ -d ${p}/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
-done
+  for i in $(ls $HOME/local/); do
+    p="$HOME/local/$i"
+    [ -d $p/bin ] && PATH="${p}/bin:${PATH}"
+    [ -d $p/sbin ] && PATH="${p}/sbin:${PATH}"
+    [ -d $p/include ] && CPATH="${p}/include:${CPATH}"
+    [ -d $p/lib ] && LD_LIBRARY_PATH="${p}/lib:${LD_LIBRARY_PATH}"
+    [ -d $p/lib ] && LD_RUN_PATH="${p}/lib:${LD_RUN_PATH}"
+    # uncomment the following if you use macintosh
+    # [ -d $i/lib ] && DYLD_LIBRARY_PATH="${i}/lib:${DYLD_LIBRARY_PATH}"
+    [ -d $p/lib/pkgconfig ] && PKG_CONFIG_PATH="${p}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+    [ -d $p/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
+  done
 fi
 
 SSHAGENT=/usr/bin/ssh-agent

@@ -77,3 +77,5 @@ alias stt="moz-phab submit tip tip"
 alias mp="moz-phab"
 alias amend="hg commit --amend"
 alias wip="hg wip"
+alias phab=moz-phab
+alias stt="moz-phab submit tip tip"

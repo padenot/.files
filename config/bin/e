@@ -1,5 +1,4 @@
-#!/bin/sh
-
+#!/bin/sh -x
 
 if [ -n "$SSH_CLIENT" ]
 then
@@ -7,9 +6,7 @@ then
   exit $?
 fi
 
-pgrep "nvim" > /dev/null
-
-if [[ "$?" = "1" ]]
+if ! pgrep "nvim"
 then
   nohup nvim --headless >/dev/null 2>&1 &
 fi
@@ -29,9 +26,6 @@ then
 fi
 
 nvr --servername localhost:6666 $*
-
-# this shouldn't be necessary but is
-nvr -c ':colorscheme solarized8'
 
 if [ -z "$SSH_CLIENT" ]
 then
