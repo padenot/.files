@@ -7,17 +7,14 @@ blackbox =
 shelve = 
 show = 
 purge = 
-evolve = /home/padenot/.mozbuild/evolve/hgext3rd/evolve
-firefoxtree = /home/padenot/.mozbuild/version-control-tools/hgext/firefoxtree
-push-to-try = /home/padenot/.mozbuild/version-control-tools/hgext/push-to-try
-js-format = /home/padenot/.mozbuild/version-control-tools/hgext/js-format
-mozext = /home/padenot/.mozbuild/version-control-tools/hgext/mozext/
 absorb = 
-# clang-format = /home/padenot/.mozbuild/version-control-tools/hgext/clang-format
 share = 
 convert = 
-phabricator = ~/src/repositories/phabsend-moz/phabricator.py
-clang-format = /home/padenot/.mozbuild/version-control-tools/hgext/clang-format
+evolve = /Users/padenot/.mozbuild/evolve/hgext3rd/evolve
+firefoxtree = /Users/padenot/.mozbuild/version-control-tools/hgext/firefoxtree
+clang-format = /Users/padenot/.mozbuild/version-control-tools/hgext/clang-format
+js-format = /Users/padenot/.mozbuild/version-control-tools/hgext/js-format
+push-to-try = /Users/padenot/.mozbuild/version-control-tools/hgext/push-to-try
 
 
 [phabricator]
@@ -28,8 +25,11 @@ callsign = MOZILLACENTRAL
 username = Paul Adenot <paul@paul.cx>
 interface = curses
 ignore = ~/.hgignore
-merge = internal:merge3
 tweakdefaults = true
+
+[merge-tools]
+filemerge.executable = /Users/padenot/bin/merge
+filemerge.args = $local $other -ancestor $base -merge $output
 
 [diff]
 git = 1
@@ -80,6 +80,7 @@ revfiles.rev = red underline
 revfiles.files = green
 [experimental]
 graphshorten = true
+evolution.allowdivergence = true
 
 [pager]
 pager = delta --dark
@@ -89,5 +90,3 @@ experimental.inmemory = yes
 
 [extdata]
 get_ignored_changesets = shell:cat `hg root`/.hg-annotate-ignore-revs 2> /dev/null || true
-
-%include /home/padenot/.hgrc-keys

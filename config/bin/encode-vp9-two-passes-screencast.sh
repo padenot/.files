@@ -17,8 +17,12 @@ else
   resize=""
 fi
 
-time ffmpeg -i $in -b:v 800k $resize  -minrate 300k -maxrate 2610k -tile-columns 2 -g 240 -threads 8 -quality best -crf 22 -c:v libvpx-vp9 -c:a libopus   -pass 1 -speed 0 $out
-time ffmpeg -i $in -b:v 800k $resize  -minrate 300k -maxrate 2610k -tile-columns 3 -g 240 -threads 8 -quality best -crf 22 -c:v libvpx-vp9 -c:a libopus   -pass 2 -speed 0 -y $out
+
+ffmpeg -i $in $resize -b:v 4000k -minrate 1500k -maxrate 5350k -tile-columns 2 -g 240 -threads 8 -pix_fmt yuv420p -quality good -crf 20 -c:v libvpx-vp9 -c:a libopus -pass 1 -speed 4 $out 
+ffmpeg -i $in $resize -b:v 4000k -minrate 1500k -maxrate 5350k -tile-columns 3 -g 240 -threads 8 -pix_fmt yuv420p -quality good -crf 20 -c:v libvpx-vp9 -c:a libopus -pass 2 -speed 4 -y $out
+
+# time ffmpeg -i $in $resize -t 0:10 -tile-columns 2 -g 240 -threads 8 -pix_fmt yuv420p -crf 10 -c:v libvpx-vp9 -c:a libopus  -pass 1 $out
+# time ffmpeg -i $in $resize -t 0:10 -tile-columns 3 -g 240 -threads 8 -pix_fmt yuv420p -crf 10 -c:v libvpx-vp9 -c:a libopus  -pass 2 -y $out
 
 
 # ffmpeg -i $in $resize -threads 8 -c:v libvpx-vp9 -b:v 0 -crf 30 -pass 1 -an -f webm /dev/null && \

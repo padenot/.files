@@ -69,3 +69,11 @@ mach() {
 }
 
 alias vim=e
+
+alias he="hg histedit"
+alias hc="hg commit"
+alias hu="hg update"
+alias stt="moz-phab submit tip tip"
+alias mp="moz-phab"
+alias amend="hg commit --amend"
+alias wip="hg wip"

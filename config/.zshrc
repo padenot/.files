@@ -3,13 +3,23 @@ export CLICOLOR=1
 export CLICOLOR_FORCE=1
 export TERM="xterm-256color"
 
+# Customize to your needs...
+export PATH=$PATH:$HOME/bin:/var/lib/gems/1.8/bin
+export PATH=$PATH:/home/paul/bin/android-sdk-linux_86/tools/
+export PATH=$PATH:~/local/adt-bundle-linux/sdk/platform-tools/
+export PATH=$PATH:/Users/padenot/Library/Python/3.8/bin
+export PATH="$HOME/.cargo/bin:$PATH"
+source ~/.aliases
+if [ -d /Users ] 
+then
+	export PATH=/opt/homebrew/bin:$PATH
+fi
+
 export LC_ALL=en_US.UTF-8
 
 setopt promptsubst
 
 source ~/.files/scm-prompt.sh
-
-export FZF_BASE="/home/linuxbrew/.linuxbrew/opt/fzf"
 
 export ZSH_CUSTOM=$HOME/.files/zsh_custom
 
@@ -20,17 +30,10 @@ export ZSH=$HOME/.files/oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 export ZSH_THEME="paul"
 
-plugins=(git command-not-found debian npm fzf mach)
+plugins=(git command-not-found debian npm mach)
 
 source $ZSH/oh-my-zsh.sh
 
-# Customize to your needs...
-export PATH=/home/paul/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
-export PATH=$PATH:$HOME/bin:/var/lib/gems/1.8/bin
-export PATH=$PATH:/home/paul/bin/android-sdk-linux_86/tools/
-export PATH=$PATH:~/local/adt-bundle-linux/sdk/platform-tools/
-export PATH="$HOME/.cargo/bin:$PATH"
-source ~/.aliases
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
@@ -48,19 +51,19 @@ fi
 
 setopt no_correctall
 
-if [ -e local ]
+if [ -d $HOME/local ]
 then
-for i in $(ls $HOME/local/); do
-  p="$HOME/local/$i"
-  [ -d $p/bin ] && PATH="${p}/bin:${PATH}"
-  [ -d $p/sbin ] && PATH="${p}/sbin:${PATH}"
-  [ -d $p/include ] && CPATH="${p}/include:${CPATH}"
-  [ -d $p/lib ] && LD_LIBRARY_PATH="${p}/lib:${LD_LIBRARY_PATH}"
-  [ -d $p/lib ] && LD_RUN_PATH="${p}/lib:${LD_RUN_PATH}"
+for i in $(ls --color=never $HOME/local/); do
+  p="$HOME/local/${i}"
+  [ -d ${p}/bin ] && PATH="${p}/bin:${PATH}"
+  [ -d ${p}/sbin ] && PATH="${p}/sbin:${PATH}"
+  [ -d ${p}/include ] && CPATH="${p}/include:${CPATH}"
+  [ -d ${p}/lib ] && LD_LIBRARY_PATH="${p}/lib:${LD_LIBRARY_PATH}"
+  [ -d ${p}/lib ] && LD_RUN_PATH="${p}/lib:${LD_RUN_PATH}"
 # uncomment the following if you use macintosh
-# [ -d $i/lib ] && DYLD_LIBRARY_PATH="${i}/lib:${DYLD_LIBRARY_PATH}"
-  [ -d $p/lib/pkgconfig ] && PKG_CONFIG_PATH="${p}/lib/pkgconfig:${PKG_CONFIG_PATH}"
-  [ -d $p/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
+  [ -d ${p}/lib ] && DYLD_LIBRARY_PATH="${i}/lib:${DYLD_LIBRARY_PATH}"
+  [ -d ${p}/lib/pkgconfig ] && PKG_CONFIG_PATH="${p}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+  [ -d ${p}/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
 done
 fi
 
@@ -79,8 +82,6 @@ done
 compinit -C
 
 GPGKEY=CB9258FD
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 PATH=$PATH:~/.cargo/bin
 export PATH="$PATH:/snap/bin"
@@ -109,11 +110,18 @@ export PATH="/home/padenot/.mozbuild/git-cinnabar:$PATH"
 
 export GPGKEY=CB9258FD
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 PATH=$PATH:~/.cargo/bin
 export PATH="$PATH:/snap/bin"
 export PATH="$PATH:$HOME/.mozbuild/tup/"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="/home/padenot/local/icecream/libexec/icecc/bin:$PATH"
+
 export PATH="/home/padenot/.mozbuild/android-sdk-linux/platform-tools/:$PATH"
+
+alias history="history 1"
+export HISTSIZE=99999  
+export HISTFILESIZE=99999 
+export HISTFILE=$HOME/.zsh_history
+export SAVEHIST=$HISTSIZE
+
+eval "$(mcfly init zsh)"

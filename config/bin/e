@@ -1,23 +1,31 @@
-#!/bin/sh -x
+#!/bin/sh
 
 
 if [ -n "$SSH_CLIENT" ]
 then
   nvim $*
+  exit $?
 fi
 
-if ! pgrep "nvim --headless"
+pgrep "nvim" > /dev/null
+
+if [[ "$?" = "1" ]]
 then
   nohup nvim --headless >/dev/null 2>&1 &
 fi
 
-pgrep "neovide"
+pgrep "neovide" /dev/null
 
 NEOVIDE_INSTANCE_NOT_RUNNING="$?"
 
 if [ $NEOVIDE_INSTANCE_NOT_RUNNING = "1" ]
 then
-  nohup neovide --remote-tcp=localhost:6666 --multiGrid >/dev/null 2>&1 &
+  if [ -d /Users ]
+  then
+    open -a "/Applications/Neovide.app/" --args --remote-tcp=localhost:6666 --multigrid
+  else
+    nohup neovide --remote-tcp=localhost:6666 --multigrid >/dev/null 2>&1
+  fi
 fi
 
 nvr --servername localhost:6666 $*
@@ -27,5 +35,10 @@ nvr -c ':colorscheme solarized8'
 
 if [ -z "$SSH_CLIENT" ]
 then
-	wmctrl -a Neovide
+  if [ -d /Users ]
+  then
+    osascript -e 'activate application "neovide"'
+  else
+    wmctrl -a Neovide
+  fi
 fi
