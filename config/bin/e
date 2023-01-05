@@ -4,9 +4,10 @@
 if [ -n "$SSH_CLIENT" ]
 then
   nvim $*
+  exit 0
 fi
 
-if ! pgrep "nvim --headless"
+if ! pgrep "nvim"
 then
   nohup nvim --headless >/dev/null 2>&1 &
 fi
@@ -17,13 +18,10 @@ NEOVIDE_INSTANCE_NOT_RUNNING="$?"
 
 if [ $NEOVIDE_INSTANCE_NOT_RUNNING = "1" ]
 then
-  nohup neovide --remote-tcp=localhost:6666 --multiGrid >/dev/null 2>&1 &
+  nohup neovide --remote-tcp=localhost:6666 --multigrid --frame None >/dev/null 2>&1 &
 fi
 
 nvr --servername localhost:6666 $*
-
-# this shouldn't be necessary but is
-nvr -c ':colorscheme solarized8'
 
 if [ -z "$SSH_CLIENT" ]
 then

@@ -13,11 +13,10 @@ push-to-try = /home/padenot/.mozbuild/version-control-tools/hgext/push-to-try
 js-format = /home/padenot/.mozbuild/version-control-tools/hgext/js-format
 mozext = /home/padenot/.mozbuild/version-control-tools/hgext/mozext/
 absorb = 
-# clang-format = /home/padenot/.mozbuild/version-control-tools/hgext/clang-format
 share = 
 convert = 
 phabricator = ~/src/repositories/phabsend-moz/phabricator.py
-clang-format = /home/padenot/.mozbuild/version-control-tools/hgext/clang-format
+# clang-format = /home/padenot/.mozbuild/version-control-tools/hgext/clang-format
 
 
 [phabricator]

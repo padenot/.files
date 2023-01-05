@@ -9,6 +9,10 @@ setopt promptsubst
 
 source ~/.files/scm-prompt.sh
 
+HISTFILE=~/.zsh_history
+HISTSIZE=999999999
+SAVEHIST=$HISTSIZE
+
 export FZF_BASE="/home/linuxbrew/.linuxbrew/opt/fzf"
 
 export ZSH_CUSTOM=$HOME/.files/zsh_custom
@@ -20,7 +24,7 @@ export ZSH=$HOME/.files/oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 export ZSH_THEME="paul"
 
-plugins=(git command-not-found debian npm fzf mach)
+plugins=(git command-not-found debian npm mach)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -48,20 +52,20 @@ fi
 
 setopt no_correctall
 
-if [ -e local ]
+if [ -e $HOME/local ]
 then
-for i in $(ls $HOME/local/); do
-  p="$HOME/local/$i"
-  [ -d $p/bin ] && PATH="${p}/bin:${PATH}"
-  [ -d $p/sbin ] && PATH="${p}/sbin:${PATH}"
-  [ -d $p/include ] && CPATH="${p}/include:${CPATH}"
-  [ -d $p/lib ] && LD_LIBRARY_PATH="${p}/lib:${LD_LIBRARY_PATH}"
-  [ -d $p/lib ] && LD_RUN_PATH="${p}/lib:${LD_RUN_PATH}"
-# uncomment the following if you use macintosh
-# [ -d $i/lib ] && DYLD_LIBRARY_PATH="${i}/lib:${DYLD_LIBRARY_PATH}"
-  [ -d $p/lib/pkgconfig ] && PKG_CONFIG_PATH="${p}/lib/pkgconfig:${PKG_CONFIG_PATH}"
-  [ -d $p/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
-done
+  for i in $(ls $HOME/local/); do
+    p="$HOME/local/$i"
+    [ -d $p/bin ] && PATH="${p}/bin:${PATH}"
+    [ -d $p/sbin ] && PATH="${p}/sbin:${PATH}"
+    [ -d $p/include ] && CPATH="${p}/include:${CPATH}"
+    [ -d $p/lib ] && LD_LIBRARY_PATH="${p}/lib:${LD_LIBRARY_PATH}"
+    [ -d $p/lib ] && LD_RUN_PATH="${p}/lib:${LD_RUN_PATH}"
+    # uncomment the following if you use macintosh
+    # [ -d $i/lib ] && DYLD_LIBRARY_PATH="${i}/lib:${DYLD_LIBRARY_PATH}"
+    [ -d $p/lib/pkgconfig ] && PKG_CONFIG_PATH="${p}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+    [ -d $p/share/man ] && MANPATH="${p}/share/man:${MANPATH}"
+  done
 fi
 
 SSHAGENT=/usr/bin/ssh-agent
@@ -79,8 +83,6 @@ done
 compinit -C
 
 GPGKEY=CB9258FD
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 PATH=$PATH:~/.cargo/bin
 export PATH="$PATH:/snap/bin"
@@ -109,11 +111,19 @@ export PATH="/home/padenot/.mozbuild/git-cinnabar:$PATH"
 
 export GPGKEY=CB9258FD
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 PATH=$PATH:~/.cargo/bin
 export PATH="$PATH:/snap/bin"
 export PATH="$PATH:$HOME/.mozbuild/tup/"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="/home/padenot/local/icecream/libexec/icecc/bin:$PATH"
 export PATH="/home/padenot/.mozbuild/android-sdk-linux/platform-tools/:$PATH"
+
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# export JAVA_HOME="~/local/android-studio/jre/"
+
+eval "$(mcfly init zsh)"

@@ -69,3 +69,5 @@ mach() {
 }
 
 alias vim=e
+alias phab=moz-phab
+alias stt="moz-phab submit tip tip"
