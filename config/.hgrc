@@ -10,11 +10,11 @@ purge =
 absorb = 
 share = 
 convert = 
-evolve = /Users/padenot/.mozbuild/evolve/hgext3rd/evolve
-firefoxtree = /Users/padenot/.mozbuild/version-control-tools/hgext/firefoxtree
-clang-format = /Users/padenot/.mozbuild/version-control-tools/hgext/clang-format
-js-format = /Users/padenot/.mozbuild/version-control-tools/hgext/js-format
-push-to-try = /Users/padenot/.mozbuild/version-control-tools/hgext/push-to-try
+evolve = ~/.mozbuild/evolve/hgext3rd/evolve
+firefoxtree = ~/.mozbuild/version-control-tools/hgext/firefoxtree
+clang-format = ~/.mozbuild/version-control-tools/hgext/clang-format
+js-format = ~/.mozbuild/version-control-tools/hgext/js-format
+push-to-try = ~/.mozbuild/version-control-tools/hgext/push-to-try
 phabricator = ~/src/repositories/phabsend-moz/phabricator.py
 # clang-format = /home/padenot/.mozbuild/version-control-tools/hgext/clang-format
 
