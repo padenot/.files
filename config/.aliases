@@ -77,5 +77,14 @@ alias stt="moz-phab submit tip tip"
 alias mp="moz-phab"
 alias amend="hg commit --amend"
 alias wip="hg wip"
-alias phab=moz-phab
+alias phab="moz-phab"
 alias stt="moz-phab submit tip tip"
+
+patchone() {
+  [ -z $1 ] && return 1
+  moz-phab patch --apply-to . --skip-dependencies $1
+}
+
+code() {
+  open "/Applications/Visual Studio Code.app/" $@
+}

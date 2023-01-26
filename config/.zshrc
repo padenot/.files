@@ -124,4 +124,10 @@ export HISTFILESIZE=99999
 export HISTFILE=$HOME/.zsh_history
 export SAVEHIST=$HISTSIZE
 
+export MCFLY_FUZZY=2
+export MCFLY_DISABLE_MENU=TRUE
+export MCFLY_RESULTS_SORT=LAST_RUN
+
 eval "$(mcfly init zsh)"
+
+
